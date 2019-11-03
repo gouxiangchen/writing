@@ -57,7 +57,27 @@ html { font-family: sans-serif; }
 #help { display: none; position: fixed; top: 10%; height: 70%; left: 25%; max-width: 50%; overflow: hidden; background-color: white; border: 1px solid #ccc; padding: 15px 30px 20px 30px; overflow-y: auto; }
 #help pre {  word-wrap: break-word !important; white-space: pre-wrap !important; }
 #closeicon { position: fixed; top: 10%; left: 25%; margin: 5px 8px; color: #ccc; cursor: pointer; font-family: sans-serif; }
-#openFileInput { position: absolute; display: none; }
+#openFileInput { 
+    display: inline-block;
+    border-radius: 2px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+    width: 200px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px; 
+    box-shadow: 0 9px #999;
+}
+
+#openFileInput:active {
+    background-color: #f4511e;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
 
 @media print { 
     #helpicon { display: none; } 
@@ -82,11 +102,12 @@ html { font-family: sans-serif; }
 <script type="text/javascript" src="Markdown.Sanitizer.js"></script>
 <script type="text/javascript" src="Markdown.Editor.js"></script>
 <script type="text/javascript" src="Markdown.Extra.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML-full"></script>
+<script type="text/javascript" src="MathJax.js?config=TEX-AMS_HTML-full"></script>
 <script type="text/javascript" src="mathjax-editing_writing.js"></script>
 <!-- <script type="text/javascript" src="jspdf.min.js"></script> -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<input id="openFileInput" type="file" />
+<script src="jquery.min.js"></script>
+<!-- <button id="openFileInput" type="file" style="vertical-align:middle"><span>打开文件</span></button> -->
+<input id="openFileInput" type="file" accept=".md, .tex" />
 <div id="wmd-button-bar" class="wmd-button-bar"></div>
 <textarea id="wmd-input" class="column wmd-input" spellcheck="false"></textarea>
 <div id="wmd-preview" class="column wmd-preview">
@@ -224,6 +245,7 @@ $(document).on('keydown', function(e) {
             mode = 1;
             $('#wmd-input').hide();
             $('#wmd-preview').show();
+            $('#openFileInput').hide();
             $('body').removeClass('fixedheight');
             $('html').removeClass('fixedheight');
             toggledarkmode(false);
@@ -262,6 +284,7 @@ $(document).on('keydown', function(e) {
     }
     else if (e.keyCode == 68 && (e.ctrlKey || e.metaKey) && !e.shiftKey) {    // CTRL + D
         mode += 1; if (mode == 3) mode = 0;
+        $('#openFileInput').show();
         if (mode == 1) {
             $('#wmd-input').hide();
             $('#wmd-preview').show();
@@ -317,7 +340,7 @@ $(document).on('keydown', function(e) {
 
 var mode = 0;
 var latexenabledonce = false;
-var latexenabled = localStorage.getItem("latex") !== "0";
+var latexenabled = localStorage.getItem("latex") !== "1";
 var darkmodeenabled = localStorage.getItem("darkmode") == "1";
 var converter = Markdown.getSanitizingConverter();
 Markdown.Extra.init(converter);
