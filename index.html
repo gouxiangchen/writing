@@ -172,20 +172,26 @@ togglemathjax = function(enabled) {
  messageStyle: "none", skipStartupTypeset: true });
             mjpd1.mathjaxEditing.prepareWmdForMathJax(editor, '', [["$", "$"]]);
             latexenabledonce = true;
-            if (editor.refreshPreview !== undefined)
+            if (editor.refreshPreview !== undefined){
                 editor.refreshPreview();
+                $("#wmd-preview").scrollTop($("#wmd-preview")[0].scrollHeight);
+            }
         }
         else {
             MathJax.Hub.queue.pending = 0;
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "wmd-preview"]);
+            $("#wmd-preview").scrollTop($("#wmd-preview")[0].scrollHeight);
         }
     }
     else {
         MathJax.Hub.queue.pending = 1; 
-        if (editor.refreshPreview !== undefined)
+        if (editor.refreshPreview !== undefined){
             editor.refreshPreview();
+            $("#wmd-preview").scrollTop($("#wmd-preview")[0].scrollHeight);
+        }
         else {
            MathJax.Hub.Config({ skipStartupTypeset: true });
+           $("#wmd-preview").scrollTop($("#wmd-preview")[0].scrollHeight);
         }
     }
 }
@@ -211,6 +217,7 @@ readFile = function(file){ // https://stackoverflow.com/a/26298948/1422096
     var contents = e.target.result;
     $('#wmd-input').val(contents);        // display file content
     editor.refreshPreview();
+    $("#wmd-preview").scrollTop($("#wmd-preview")[0].scrollHeight);
   };
   reader.readAsText(file);
 }
@@ -229,6 +236,11 @@ $('#wmd-input').on('input', function() {
     localStorage.setItem("writing", $('#wmd-input').val());
 });
 
+$('#wmd-input').bind('input propertychange', function(){  
+    $("#wmd-preview").scrollTop($("#wmd-preview")[0].scrollHeight);
+});  
+
+
 $('#wmd-input').focus();
 
 $('#helpicon').click(function() {
@@ -237,6 +249,7 @@ $('#helpicon').click(function() {
 
 $('#closeicon, #wmd-input, #wmd-preview').click(function() {
     $('#help').hide();
+    $("#wmd-preview").scrollTop($("#wmd-preview")[0].scrollHeight);
 });
 
 $(document).on('keydown', function(e) {
@@ -340,7 +353,7 @@ $(document).on('keydown', function(e) {
 
 var mode = 0;
 var latexenabledonce = false;
-var latexenabled = localStorage.getItem("latex") !== "1";
+var latexenabled = localStorage.getItem("latex") !== "0";
 var darkmodeenabled = localStorage.getItem("darkmode") == "1";
 var converter = Markdown.getSanitizingConverter();
 Markdown.Extra.init(converter);
