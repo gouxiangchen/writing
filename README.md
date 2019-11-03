@@ -1,6 +1,9 @@
 Writing
 =======
 
+modified for personal use. add full requirements.
+*****************
+
 **Writing** is a lightweight distraction-free text editor, in the browser.
 
 Live version: [Writing](https://josephernest.github.io/writing/).
